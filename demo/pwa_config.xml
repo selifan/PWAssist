@@ -4,7 +4,6 @@
   <appId>myTODO</appId>
   <appDesc>Just a test page for demonstrating PWAssist</appDesc>
   <appShortName>TODO list</appShortName>
-  <swTemplate>PWAassist-template-1.js</swTemplate>
   <ignoreFolders>res,_tempfiles</ignoreFolders>
   <ignoreFiles>test*.htm,test*.html</ignoreFiles>
   <cacheName>todo_cache</cacheName>
