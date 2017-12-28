@@ -43,13 +43,9 @@ If you need to have another "document root" for your files, change default "./" 
 so after changing version newly generated SW script could force clearing from old cache and populate new one)
 - __Lang__ (lang) will be used in manifest "lang" parameter.
 - __SW template file__ (swTemplate) : here you can set your service-worker template file name, to override "standard" name "PWAssist.sw-template.js".
-- __Service Worker Filenamу__ (swFilename) : name for the generated SW script file. Default is "service-worker.js"
-
 Note that if "standard template" does not exist, PWAssist uses js code builtin inside script.
-
 But if you set your own name and such file won't be found in the folder with PWAssist.php,
 service-worker file creating task will fail.
-
 Standard template for service worker code is inside PWAssist.php module.
 It is based on service worker code from Google developer examples (cache-First approach) and slightly modified
 to be able insert "parameterized" blocks, like generated filelist to cache, cache name, string for detecting
@@ -59,21 +55,21 @@ For example, "{version}" will be replaced with App Version, "{cachename}" with c
 {dynamicTest} will change to js code for checking for all "dynamicPart" items, so any matching will activate request to Server.
 Finally, generated precached filelist will be inserted in place of "{filelist}" macro.
 
-- __Service Worker Filename__ is a name for generated SW script.
-- __Cached File Extensions__ is a comma separated file extensions that will be pre-cached and included in filelist in SW script.
-- __Folders To Ignore__ - folder names that won't be scanned for files to pre-cache.
-- __Cached Files Size Limit__ - cached files size limit, all files bigger then that won't be cached.
+- __Service Worker Filename__ (swFilename) : name for the generated SW script file. Default is "service-worker.js"
+- __Cached File Extensions__ (fileTypes) : comma separated extensions of files that will be pre-cached (included in file list in SW script).
+- __Folders To Ignore__ (ignoreFolders) : folder names that won't be scanned for files to pre-cache.
+- __Cached Files Size Limit__ (fileSizeLimit) : cached files size limit; all files bigger then this won't be cached.
 Size can be set with "M" or "K" postfix : 2M is 2 MegaBytes (that's equivalent to 2097152 or 2048K), 100K is 100 KiloBytes.
-- __Files To Ignore__ - comma separated file mask for files to be excluded from cache list.
-- __Cache Name__ - string will be used with appVersion for dataCacheName and cacheName variables in SW script.
-- __Source Icon File__ - path to the source image that will be used to create icons in all listed resolutions.
+- __Files To Ignore__ (ignoreFiles) : comma separated file mask for files to be excluded from cache file list.
+- __Cache Name__ (cacheName) : string will be used with appVersion for dataCacheName and cacheName variables in SW script.
+- __Source Icon File__ (baseIcon) : path to the source image that will be used to create icons in all listed resolutions.
 If image with this name not found, "icons" task will be rejected.
-- __All Icon Sizes__ - comma separated resoluitons for application icon.
-- __Icon Filename Template__ - string template for icon files, here "{size}" is a placeholder for image resolution (pix).
-For example, if you set "img/myapp{size}.png", program wiill create folder "img" if it does not exist yet, and image files
+- __All Icon Sizes__ (iconResolutions) : comma separated resoluitons for application icon.
+- __Icon Filename Template__ (baseIcon) : string template for icon files, here "{size}" is a placeholder for image resolution (pix).
+For example, if you set "img/myapp{size}.png", program wiill create folder "img" (if it does not exist yet), and image files
 img/myapp48.png, img/myapp96.png etc.
-- __Background Color__ and __Theme Color__ are just a values for "background_color" and "theme_color" in generated manifest.json
-- __Dynamic Requests Contain__ is a comma separated list of substrings that will say our service worker "I am dynamic request, don't cache me".
+- __Background Color__ (backgroundColor) and __Theme Color__ (themeColor) are just a values for "background_color" and "theme_color" in generated manifest.json
+- __Dynamic Requests Contain__ (dynamicPart) : comma separated list of substrings that will say our service worker "I am dynamic request, don't cache me".
 So when your application call GET request that includes one of these strings, SW will make direct network request.
 
 ## Source Image file for icons.
