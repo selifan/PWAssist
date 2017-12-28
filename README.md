@@ -42,7 +42,7 @@ If you need to have another "document root" for your files, change default "./" 
 - __App Version__ (appVersion) - application current version (will be used in cacheName in service worker,
 so after changing version newly generated SW script could force clearing from old cache and populate new one)
 - __Lang__ (lang) will be used in manifest "lang" parameter.
-- __SW template file__ (swFilename) : here you can set your service-worker template file name,
+- __SW template file__ (swTemplate) : here you can set your service-worker template file name,
 to override "standard" name "PWAssist.sw-template.js".
 Note that if "standard template" does not exist, PWAssist uses js code builtin inside script.
 
