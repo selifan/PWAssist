@@ -77,10 +77,11 @@ So when your application call GET request that includes one of these strings, SW
 
 ## Source Image file for icons.
 I hope you understand that "source" image for all icons must have resolution greater or equal to the most large icon.
-Otherwise upizing will drive to interpolation, and result icons will suck.
+Otherwise upscaling will create icons looking not so good.
+
 PNG format is preferenced for source image, as it supports transparency.
 Other source image types supported (gif, webp, jpg), but if you choose some ot them, PWAssist will create png icons from it,
-but probably without transparency areas.
+probably without transparency areas.
 
 ## Demo
 Working sample demonstrating "service page" with all buttons for creating PWA modules :
