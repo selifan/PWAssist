@@ -67,15 +67,15 @@ Finally, generated precached filelist will be inserted in place of "{filelist}" 
 Size can be set with "M" or "K" postfix : 2M is 2 MegaBytes (that's equivalent to 2097152 or 2048K), 100K is 100 KiloBytes.
 - __Files To Ignore__ - comma separated file mask for files to be excluded from cache list.
 - __Cache Name__ - string will be used with appVersion for dataCacheName and cacheName variables in SW script.
-- __Source Icon File__ - path to source image that will used to create icons in all listed resolutions.
-If image with this name not found, "icons" job will be rejected.
+- __Source Icon File__ - path to the source image that will be used to create icons in all listed resolutions.
+If image with this name not found, "icons" task will be rejected.
 - __All Icon Sizes__ - comma separated resoluitons for application icon.
 - __Icon Filename Template__ - string template for icon files, here "{size}" is a placeholder for image resolution (pix).
 For example, if you set "img/myapp{size}.png", program wiill create folder "img" if it does not exist yet, and image files
 img/myapp48.png, img/myapp96.png etc.
 - __Background Color__ and __Theme Color__ are just a values for "background_color" and "theme_color" in generated manifest.json
 - __Dynamic Requests Contain__ is a comma separated list of substrings that will say our service worker "I am dynamic request, don't cache me".
-So when your application call GET request that includes one of these strings, SW will make network request.
+So when your application call GET request that includes one of these strings, SW will make direct network request.
 
 ## Source Image file for icons.
 I hope you understand that "source" image for all icons must have resolution greater or equal to the most large icon.
