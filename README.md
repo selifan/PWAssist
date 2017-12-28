@@ -16,8 +16,8 @@ After that you can work in two ways:
 
 - open this file in your browser, (the current folder must be available from your local web server software !).
 In that case you will see HTML page with three buttons for starting three tasks, and a form for editing and saving your PWA parameters.
-- or just pwamake.php from the shell:
-> php pwamake.php {command}[,{command...}]
+- or run pwamake.php from the shell:
+> php pwamake.php {command} [{command2 ...}]
 
 where {command} is one of manifest, icons, sw, all.
 - sw - creates service worker js file
