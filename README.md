@@ -5,17 +5,18 @@ and generating icon set for all needed resoultions from a single image.
 
 ## Using
 
-To start using PWAssist, just prepare configuration XML file with all needed parameters, and create simple "make" php file like this:
+To start using PWAssist, just prepare configuration XML file with all needed parameters (optional), 
+and create simple "maker" php file like this:
 
 ```php
 // file : pwamake.php
 include_once('../src/PWAssist.php');
-
+PWAssist::init();
 ```
 After that you can work in two ways:
 
-- open this file in your browser, (the current folder must be available from your local web server software !).
-In that case you will see HTML page with three buttons for starting three tasks, and a form for editing and saving your PWA parameters.
+- open this file in your browser, (the current folder must be somewhere inside *DocumentRoot* of your local web server software).
+In that case you will see HTML page with three buttons for starting three tasks, and a form for editing and saving your PWA parameters (this will make/update pwa_config.xml file).
 - or run pwamake.php from the shell:
 > php pwamake.php {command} [{command2 ...}]
 
@@ -25,9 +26,6 @@ where {command} is one of manifest, icons, sw, all.
 - icons - creates icon files for all your registered sizes. These files will be listed in manifest.json as icons for different resolutions.
 - all - performs all these tasks in the following order: icons, manifest, sw.
 So calling "all" is equivalent of "icons manifest sw".
-
-All you need is preparing configuration XML file and a simple "starting" php module (for example pwamake.php)
-that calls method init from PWAssist class.
 
 ## Configuration XML file
 
