@@ -49,10 +49,10 @@ to override "standard" name "PWAssist.sw-template.js".
 Note that if "standard template" does not exist, PWAssist uses js code builtin inside script.
 
 But if you set your own name and such file won't be found in the folder with PWAssist.php,
-creating service-worker file will fail.
+service-worker file creating task will fail.
 
 Standard template for service worker code is inside PWAssist.php module.
-It is based on service worker code from Google developer examples (cahce-First approach) and slightly modified
+It is based on service worker code from Google developer examples (cache-First approach) and slightly modified
 to be able insert "parameterized" blocks, like generated filelist to cache, cache name, string for detecting
 "dynamic" URL that should be requested directly without caching.
 You have to prepare "mustashed" macros inside your template to be replaced with final values.
