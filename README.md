@@ -16,6 +16,10 @@ PWAssist::init();
 - open this file in your browser, (the current folder must be somewhere inside *DocumentRoot* of your local web server software).
 You will see HTML page with three buttons for starting three tasks, and a form for editing and saving your PWA parameters (this will make/update pwa_config.xml file
 in the current folder).
+![area with buttons](docs/PWAssist-butts.png)
+
+![form for editing app params](docs/PWAssist-form.png)
+
 - After performing "Save parameters" you will have "pwa_config.xml" with all desired configuration. Now you can press  any of "action" button (icons, Service worker file, manifest.json)
  or run pwamake.php from the shell:
 
