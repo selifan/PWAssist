@@ -20,8 +20,9 @@ in the current folder).
 ![area with buttons](docs/PWAssist-butts.png)
 
 ![form for editing app params](docs/PWAssist-form.png)
+
 Note that SW Template File is select box, because we have registered templates in the 
-global config file.
+global config file (see later).
 
 - After performing "Save parameters" you will have "pwa_config.xml" with all desired configuration. Now you can press  any of "action" button (icons, Service worker file, manifest.json)
  or run pwamake.php from the shell:
