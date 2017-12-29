@@ -106,6 +106,12 @@ Below is an example of block for registering two sw templates
 When PWAssist has a non-empty list of SW templates, it will create "select-box" for "SW Template" field instead of standard text input,
 in the "Application parameters" form.
 
+Sample global configuration file is in src folder. 
+
+__Note__ : it contains registered SW templates just to show you how to use this feature. 
+Respective js files not included, so if you try to select one of them for generating 
+service-worker in your application, the task will fail !
+
 ## Source Image file for icons.
 I hope you understand that source image for all icons must have resolution greater or equal to the most large icon.
 Otherwise you will get upscaled pictures looking not so good.
