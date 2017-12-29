@@ -11,8 +11,8 @@
   <iconFilenameTemplate>img/iconapp-{size}.png</iconFilenameTemplate>
   <backgroundColor>#CCCCFF</backgroundColor>
   <themeColor>#AACCFF</themeColor>
-  <swTemplatess>
+  <swTemplates>
     <swTemplate src="PWAssist-cacheFirst.js" title="Cache-First" />
     <swTemplate src="PWAssist-networkFirst.js" title="Network-First" />
-  </swTemplatess>
+  </swTemplates>
 </PWA-config>
