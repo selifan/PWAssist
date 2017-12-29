@@ -6,10 +6,8 @@
 * @link https://github.com/selifan/PWAssist
 * @version 0.1
 * Created 2017-12-03
-* Updated 2017-12-28
+* Updated 2017-12-29
 */
-
-# include_once('basefunc.php');
 
 class PWAssist {
 
@@ -25,6 +23,8 @@ class PWAssist {
     // default configuration
     private static $defaultCfg = array(
       'appName' => 'My Application'
+      ,'copyRight' => 'My Company'
+      ,'author' => 'Noname'
       ,'appId'  => 'myPWA'
       ,'appDesc' => 'My Progressive Web Application'
       ,'appShortName' => 'My PWA'
@@ -49,6 +49,8 @@ class PWAssist {
       ,'themeColor'  => '#0404A0'
       ,'pngQuality' => 0
     );
+
+    private static $_swTemplates = array();
 
     private static $cfg = array();
     /**
@@ -92,9 +94,7 @@ class PWAssist {
     }
 
     public static function loadConfig($options='') {
-        $arrlist = array('fileTypes'=>'s','ignoreFolders'=>'s','ignoreFiles'=>'s'
-          ,'iconResolutions'=>'s','dynamicPart'=>'s'
-        );
+
         if (is_file(self::PWA_CONFIGFILE)) {
             try {
                 $xml = simplexml_load_file(self::PWA_CONFIGFILE);
@@ -104,16 +104,7 @@ class PWAssist {
             }
             if (is_object($xml))
             foreach($xml->children() as $id => $val) {
-                /*
-                if (array_key_exists($id, $arrlist)) {
-                    $newvals = explode(',', (string)$val);
-                    if ($arrlist[$id] == 's') self::$cfg[$id] = $newvals;
-                    else self::$cfg[$id] = array_merge(self::$cfg[$id], $newvals);
-                }
-                else
-                */
                 if ($val!=='') self::$cfg[$id] = (string)$val;
-                //WriteDebugInfo("from XML: [$id] = $val");
             }
             else echo "Wrong XML in pwa_config.xml ignored!".self::$BR;
         }
@@ -128,6 +119,8 @@ class PWAssist {
     * @param mixed $options associative array
     */
     public static function init($options = false) {
+
+        self::_loadGlobalConfig();
         self::$cfg = self::$defaultCfg;
         self::$_inConcole = (empty($_SERVER['REMOTE_ADDR']));
         self::$BR = (self::$_inConcole  ? "\n" : '<br>');
@@ -158,6 +151,34 @@ class PWAssist {
         self::htmlForm();
     }
 
+    /**
+    * Loading "global" configuration if file PWAssist-global-cfg.xml exists
+    *
+    */
+    private static function _loadGlobalConfig() {
+
+        $globalXml = __DIR__ . DIRECTORY_SEPARATOR . 'PWAssist-global-cfg.xml';
+        if (is_file($globalXml)) {
+            $xml = simplexml_load_file($globalXml);
+            foreach($xml->children() as $id => $val) {
+                if(isset(self::$defaultCfg[$id])) self::$defaultCfg[$id] = (string)$val;
+            }
+            if (isset($xml->swTemplates)) {
+                foreach($xml->swTemplates->children() as $swfile) {
+                    $src = isset($swfile['src']) ? (string)$swfile['src'] : '';
+                    if ($src !=='') {
+                        $title = (isset($swfile['title']) ? (string)$swfile['title'] : $src);
+                        self::$_swTemplates[$src] = ($title ? $title : $src);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+    * Running console mode (called from shell, batch scripts etc)
+    *
+    */
     public static function runConsole() {
         global $argv;
         if (count($argv) < 2) {
@@ -208,9 +229,25 @@ class PWAssist {
         foreach(self::$cfg as $key=>$val) {
             $hcfg[$key] = (is_array($val) ? implode(',', $val) : $val);
         }
+        $templateInput = '';
+
+        if(count(self::$_swTemplates) == 0) {
+            $templateInput = "<input type=\"text\" name=\"swTemplate\" style=\"width:15em\" value=\"$hcfg[swTemplate]\"/>";
+        }
+        else {
+            $swt = array_merge( array('' => 'Built-in Template'), self::$_swTemplates);
+            $templateInput = "<select name=\"swTemplate\" style=\"width:25em\">";
+
+            foreach($swt as $src=>$title) {
+                $sel = (($hcfg['swTemplate'] == $src) ? 'selected="selected"':'');
+                $templateInput.= "<option value=\"$src\" $sel>$title</option>";
+            }
+            $templateInput .= '</select>';
+        }
+
         $html = <<< EOHTM
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru-RU" lang="ru-RU" >
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-EN" lang="en-EN" >
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <style>
@@ -248,7 +285,7 @@ function generate(mode) {
 <h2>PWA assistant, application: $appname / $appdesc</h2>
 <a href="$homeLink">Back to aplication</a>
 <br><br>
-<div class="pwaform" style="width:500px">
+<div class="pwaform" style="width:550px">
 Create :
 <input type="button" value="Icons" onclick="generate('icons')" />
 <input type="button" value="Service worker file" onclick="generate('sw')" />
@@ -287,7 +324,7 @@ Result:
     <td>Lang</td><td><input type="text" name="lang" style="width:4em" value="$hcfg[lang]"/></td>
   </tr>
   <tr>
-    <td>SW template file</td><td><input type="text" name="swTemplate" style="width:15em" value="$hcfg[swTemplate]"/></td>
+    <td>SW Template File</td><td>$templateInput</td>
   </tr>
   <tr>
     <td>Service Worker Filename</td><td><input type="text" name="swFilename" style="width:15em" value="$hcfg[swFilename]"/></td>
@@ -319,10 +356,10 @@ Result:
     <td>Icon Filename Template</td><td><input type="text" name="iconFilenameTemplate" style="width:25em" value="$hcfg[iconFilenameTemplate]"/></td>
   </tr>
   <tr>
-    <td>Background Color(Manifest)</td><td><input type="text" name="backgroundColor" style="width:10em" value="$hcfg[backgroundColor]"/></td>
+    <td>Background Color</td><td><input type="text" name="backgroundColor" style="width:10em" value="$hcfg[backgroundColor]"/></td>
   </tr>
   <tr>
-    <td>Theme Color(Manifest)</td><td><input type="text" name="themeColor" style="width:10em" value="$hcfg[themeColor]"/></td>
+    <td>Theme Color</td><td><input type="text" name="themeColor" style="width:10em" value="$hcfg[themeColor]"/></td>
   </tr>
   <tr>
     <td>Dynamic Requests Contain:</td><td><input type="text" name="dynamicPart" style="width:25em" value="$hcfg[dynamicPart]"/></td>
@@ -357,13 +394,15 @@ EOHTM;
             $dynamicTest .= "\n  if(e.request.url.indexOf('$dypart') > -1) isDynamic = true;";
         }
 
-        if (is_file($sw_tplname)) $swCode = file_get_contents($sw_tplname);
+        if (!empty(self::$cfg['swTemplate']) && is_file($sw_tplname)) $swCode = file_get_contents($sw_tplname);
         else {
-            if (self::$cfg['swTemplate'] !== self::$defaultCfg['swTemplate'])
-                die('Job aborted: User template file not found :' . self::$BR . $sw_tplname);
+            if (!empty(self::$cfg['swTemplate']))
+                return ('SW generating failed: template file not found :' . self::$BR . $sw_tplname);
             $swCode = <<< EOJS
 // Service Worker for PWA {app_name} {app_desc}
 // Generated {created_date} by PWAssist.php
+// Author {author}
+// Copyright {copyright}
 // version: {version}
 var dataCacheName = 'data-{cachename}-v{version}';
 var cacheName = '{cachename}-{version}';
@@ -436,6 +475,8 @@ EOJS;
         $replarr = array(
          '{created_date}'  => date('d.m.Y H:i:s')
          ,'{version}'      => self::$cfg['appVersion']
+         ,'{author}'       => self::$cfg['author']
+         ,'{copyright}'    => self::$cfg['copyRight']
          ,'{cachename}'    => self::$cfg['cacheName']
          ,'{app_name}'     => $appname
          ,'{app_desc}'     => self::$cfg['appDesc']
@@ -452,9 +493,8 @@ EOJS;
     }
 
     public static function saveParameters($options='') {
-        include_once('basefunc.php');
+
         $pars = array_merge($_GET, $_POST);
-        #        WriteDebugInfo("saveParameters params ", $pars);
         $cfg = self::$defaultCfg;
         // save updated cfg to XML:
         $cfgbody = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PWA-config>\n";
@@ -507,14 +547,14 @@ EOJSON;
     }
 
     private static function createIcons() {
-
+        include_once('basefunc.php');
         if (empty(self::$cfg['baseIcon'])) return '';
         if (!function_exists('imagecopyresized')) return 'GD not installed in Your PHP configuration, icons not created';
 
         if (!is_file(self::$cfg['baseIcon']))
             return self::$cfg['baseIcon'] . " - Base icon file not found, Icons creation impossible";
-
-        switch (strtolower(substr(self::$cfg['baseIcon'], -4))) {
+        $ftype = strtolower(substr(self::$cfg['baseIcon'], -4));
+        switch ($ftype) {
             case '.png':
                 $srcImg = imagecreatefrompng(self::$cfg['baseIcon']);
                 break;
