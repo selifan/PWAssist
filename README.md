@@ -102,13 +102,30 @@ For example, here you can set your author's name and copyright strings that will
 
 Another feature of global config : you can register your service-worker code templates here, so you can choose one of them
 for generating final SW module.
-Below is an example of block for registering two sw templates
+
+Below is an example of PWAssist-global-cfg.xml with a  registering two sw templates block:
+
 ```XML
-  <swTemplatess>
+<?xml version="1.0" encoding="UTF-8"?>
+<PWA-config>
+  <author>My name</author>
+  <copyRight>my little big company</copyRight>
+  <ignoreFolders>res</ignoreFolders>
+  <ignoreFiles>test*.html,_temp*.*,*.log</ignoreFiles>
+  <fileSizeLimit>256K</fileSizeLimit>
+  <cacheName>myapp_cache</cacheName>
+  <dynamicPart>?refresh=</dynamicPart>
+  <lang>en-EN</lang>
+  <iconResolutions>44,128,152,256</iconResolutions>
+  <baseIcon>res/icon.png</baseIcon>
+  <iconFilenameTemplate>img/iconapp-{size}.png</iconFilenameTemplate>
+  <backgroundColor>#CCCCFF</backgroundColor>
+  <themeColor>#AACCFF</themeColor>
+  <swTemplates>
     <swTemplate src="PWAssist-cacheFirst.js" title="Cache-First" />
     <swTemplate src="PWAssist-networkFirst.js" title="Network-First" />
-  </swTemplatess>
-
+  </swTemplates>
+</PWA-config>
 ```
 
 When PWAssist has a non-empty list of SW templates, it will create "select-box" for "SW Template" field instead of standard text input,
