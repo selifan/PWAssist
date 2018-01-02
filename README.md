@@ -141,7 +141,7 @@ service-worker in your application, the task will fail !
 I hope you understand that source image for all icons must have resolution greater or equal to the most large icon.
 Otherwise you will get upscaled pictures looking not so good.
 
-PNG format is preferenced for source image, as it supports transparency.
+PNG format is preferred for source image, as it supports transparency.
 Other source image types supported (gif, webp, jpg), but if you choose some ot them, PWAssist will try to create png icons from it,
 probably without transparency areas.
 
