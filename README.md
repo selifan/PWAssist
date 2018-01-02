@@ -27,7 +27,7 @@ global config file (described later).
 - After performing "Save parameters" you will have "pwa_config.xml" with all desired configuration. Now you can press  any of "action" button (icons, Service worker file, manifest.json)
  or run pwamake.php from the shell:
 ```sh
-> php pwamake.php {command} [{command} ...]
+$ php pwamake.php {command} [{command} ...]
 ```
 where {command} is one of icons, manifest, sw, all.
 - icons - creates icon files for all your registered sizes. These files will be listed in manifest.json as icons for different resolutions.
