@@ -4,21 +4,25 @@
 * Task: create service worker js code with all resources listed in "caching list"
 * @author Alexander Selifonov, <alex [at] selifan {dot} ru>
 * @link https://github.com/selifan/PWAssist
-* @version 0.1
+* @version 0.10
 * Created 2017-12-03
-* Updated 2017-12-29
+* Updated 2018-01-10
 */
 
 class PWAssist {
 
     const MANIFEST_NAME = 'manifest.json';
     const PWA_CONFIGFILE = './pwa_config.xml';
-    const VERSION = '0.1';
+    const VERSION = '0.10';
 
     static $BR = '<br>';
 
     private static $_inConcole = false;
     private static $_fl = array();
+
+    private static $_skip_keys = array(
+      'created_date','fileTypes','ignoreFolders','ignoreFiles','fileSizeLimit','dynamicTest'
+    );
 
     // default configuration
     private static $defaultCfg = array(
@@ -161,7 +165,7 @@ class PWAssist {
         if (is_file($globalXml)) {
             $xml = simplexml_load_file($globalXml);
             foreach($xml->children() as $id => $val) {
-                if(isset(self::$defaultCfg[$id])) self::$defaultCfg[$id] = (string)$val;
+                self::$defaultCfg[$id] = (string)$val;
             }
             if (isset($xml->swTemplates)) {
                 foreach($xml->swTemplates->children() as $swfile) {
@@ -250,12 +254,16 @@ class PWAssist {
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-EN" lang="en-EN" >
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<style>
+<style type="text/css">
+body, html {
+    font-family: tahoma,verdana,arial,helvetica,sans-serif;
+    font-size: 11pt;
+}
 .log { border: 1px solid #aaa; background: #eee; width:auto; height:400px; overflow:auto }
 .pwaform { float: left; width:auto; border: 1px solid #999; margin:0 10px 10px 0; padding:8px;}
 input[type=button] { border: 1px solid #999; background: #ddd; margin: 0 0.5em 0.5em 0;}
 input[type=submit] { border: 1px solid #999; background: #ddd; margin: 0 0.5em 0.5em 0;}
-input[type=text] { border: 1px solid #999; background: #fff; }
+input[type=text] { font-size: 9pt; border: 1px solid #999; background: #fff; }
 table.formtable td:first-child { white-space: nowrap; text-align:right; padding-right:0.3em; }
 hr { color:#aaa; height:0; size:1px; }
 </style>
@@ -483,6 +491,13 @@ EOJS;
          ,'{filelist}' => $filelist
          ,'{dynamicTest}'  => $dynamicTest
         );
+
+        # add user-defined cfg values to replace list
+        foreach(self::$cfg as $key => $val) {
+            if (is_string($val) && !in_array($key, self::$_skip_keys, true))
+                $replarr["{{$key}}"] = $val;
+        }
+
         $swCode = strtr($swCode, $replarr);
         file_put_contents(self::$cfg['swFilename'], $swCode);
         return (
@@ -649,10 +664,15 @@ EOJSON;
             self::_scanDir($oned);
         }
     }
+
     public static function decodeNumeric($par) {
         $ret = intval($par);
         if (strtoupper(substr($par,-1)) === 'K') $ret *= 1024;
         elseif (strtoupper(substr($par,-1)) === 'M') $ret *= 1024*1024;
         return $ret;
+    }
+
+    public static function getConfig() {
+        return self::$cfg;
     }
 } // PWAssist end
