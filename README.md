@@ -1,6 +1,6 @@
 # PWAssist: PWA assistant
 
-Small PHP class for automated PWA files creation : service-worker (javascript), manifest.json,
+Small PHP class for automated PWA (Progressive Web Applications) files creation : service-worker (javascript), manifest.json,
 and generating icon set for all needed resoultions from a single image.
 
 ## Using
