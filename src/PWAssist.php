@@ -562,7 +562,7 @@ EOJSON;
     }
 
     private static function createIcons() {
-        include_once('basefunc.php');
+
         if (empty(self::$cfg['baseIcon'])) return '';
         if (!function_exists('imagecopyresized')) return 'GD not installed in Your PHP configuration, icons not created';
 
