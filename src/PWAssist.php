@@ -557,7 +557,7 @@ EOJS;
 EOJSON;
 
         file_put_contents(($cfg['startFolder'] . self::MANIFEST_NAME), $manifestBody);
-        return "Manifest createdm size: " .self::MANIFEST_NAME
+        return "Manifest created size: " .self::MANIFEST_NAME
           . ', size: ' . filesize($cfg['startFolder'] . self::MANIFEST_NAME);
     }
 
